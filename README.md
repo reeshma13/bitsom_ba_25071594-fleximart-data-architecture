@@ -14,6 +14,8 @@ The project demonstrates how operational data can be transformed into meaningful
 
 
 ## Repository Structure
+
+```text
 studentID-fleximart-data-architecture/
 │
 ├── README.md                           # Root documentation
@@ -49,7 +51,7 @@ studentID-fleximart-data-architecture/
     ├── warehouse_data.sql
     └── analytics_queries.sql
 
-
+```
 
 ## Technologies Used
 
@@ -70,20 +72,28 @@ You can create and load the databases either **using command-line scripts** (rec
 
 
 ##### Create databases
+
+```bash
 mysql -u root -p -e "CREATE DATABASE fleximart;"
 mysql -u root -p -e "CREATE DATABASE fleximart_dw;"
-
+```
 ##### Run Part 1 - ETL Pipeline
+
+```bash
 python part1-database-etl/etl_pipeline.py
-
+```
 ##### Run Part 1 - Business Queries
-mysql -u root -p fleximart < part1-database-etl/business_queries.sql
 
+```bash
+mysql -u root -p fleximart < part1-database-etl/business_queries.sql
+```
 ##### Run Part 3 - Data Warehouse
+
+```bash
 mysql -u root -p fleximart_dw < part3-datawarehouse/warehouse_schema.sql
 mysql -u root -p fleximart_dw < part3-datawarehouse/warehouse_data.sql
 mysql -u root -p fleximart_dw < part3-datawarehouse/analytics_queries.sql
-
+```
 
 #### Option 2: Using MySQL Workbench (Manual Method)
 
@@ -100,10 +110,11 @@ mysql -u root -p fleximart_dw < part3-datawarehouse/analytics_queries.sql
 
 MongoDB collections can also be created either using scripts or manually in MongoDB Compass.
 
-  mongosh < part2-nosql/mongodb_operations.js
+```bash
+mongosh < part2-nosql/mongodb_operations.js
+```
 
-
-------Alternative:-------
+**`Alternative:`**
 
 - Open MongoDB Compass
 
@@ -113,20 +124,22 @@ Import products_catalog.json directly into the collection
 
 ## Key Learnings
 
-Through this project, I learned how to design normalized relational schemas and build an end-to-end ETL pipeline with proper data cleaning and validation. 
-I also understood when and why NoSQL databases like MongoDB are useful for handling flexible and nested data structures. 
-Additionally, I gained practical experience in dimensional modeling, star schema design, and writing OLAP queries for business analytics.
+- Through this project, I learned how to design normalized relational schemas and build an end-to-end ETL pipeline with proper data cleaning and validation. 
+
+- I also understood when and why NoSQL databases like MongoDB are useful for handling flexible and nested data structures. 
+
+- Additionally, I gained practical experience in dimensional modeling, star schema design, and writing OLAP queries for business analytics.
 
 ## Challenges Faced
 
  ### Handling foreign key errors in fact tables
 While loading data into the fact_sales table, foreign key constraint errors occurred because some dimension records were not available at the time of insertion. Since fact tables depend on dimension tables, inserting sales data before loading date, product, or customer information caused failures.
 
-Solution: 
+***Solution:***
 I ensured that all dimension tables (dim_date, dim_product, and dim_customer) were populated first. I also carefully verified that every foreign key used in the fact table existed in the corresponding dimension tables before inserting the data. This step-by-step loading order helped avoid foreign key violations.
 
  ### Managing different date formats and missing values during ETL
 The raw data contained dates in multiple formats and some records had missing customer or product information. This caused inconsistencies during data transformation and loading.
 
-Solution: 
+***Solution:***
 I implemented date normalization logic to convert all dates into a standard format before processing. For missing values, I applied explicit data imputation rules and documented the reasons for these corrections using comments and logs. This approach ensured consistent data quality and made the ETL process transparent and easy to understand.

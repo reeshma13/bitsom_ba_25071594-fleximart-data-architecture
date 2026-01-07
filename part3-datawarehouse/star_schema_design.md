@@ -90,16 +90,16 @@ The dim_customer table enables analysis of sales across different customer locat
 ## Section 2: Design Decisions
 
 
--- Why you chose this granularity (transaction line-item level)
+*** Why you chose this granularity (transaction line-item level) ***
 
 The granularity of the fact table is defined at the **transaction line-item level**, where each row represents one product sold in an order. This level of detail provides maximum flexibility for analysis, allowing sales to be examined at the product, customer, or time level without losing information. It also supports accurate aggregation of quantities and revenue.
 
 
--- Why surrogate keys instead of natural keys
+*** Why surrogate keys instead of natural keys ***
 
 Surrogate keys are used instead of natural keys to improve performance and maintain consistency. Natural keys from source systems may change, be duplicated, or have business meaning that evolves over time. Surrogate keys are system-generated, stable, and ensure efficient joins between fact and dimension tables.
 
--- How this design supports drill-down and roll-up operations
+*** How this design supports drill-down and roll-up operations ***
 
 This star schema design supports both **drill-down and roll-up operations**. Analysts can roll up data from daily sales to monthly or yearly summaries using the date dimension. They can also drill down from category-level sales to individual products or customers. The separation of facts and dimensions makes analytical queries simpler and faster.
 
@@ -117,26 +117,27 @@ The chosen granularity for the fact table is the transaction line-item level, wh
 ### Source Transaction
 In the source transactional system, the following order is recorded:
 
-Order Number: 101
+`Order Number`: 101
 
-Customer Name: John Doe
+`Customer Name`: John Doe
 
-Product Name: Laptop
+`Product Name`: Laptop
 
-Quantity: 2
+`Quantity`: 2
 
-Unit Price: ₹50,000
+`Unit Price`: ₹50,000
 
-Order Date: 15-01-2024
+`Order Date`: 15-01-2024
 
 This data is originally stored across multiple normalized tables such as customers, orders, and order_items.
 
-
+```css
 Order #101  
 Customer: John Doe  
 Product: Laptop  
 Quantity: 2  
-Unit Price: 50000  
+Unit Price: 50000 
+``` 
 
 ---
 
@@ -147,6 +148,7 @@ fact_sales
 The fact table captures the measurable sales values:
 
 **fact_sales**
+```json
 {
 date_key: 20240115,
 product_key: 5,
@@ -156,14 +158,14 @@ unit_price: 50000,
 discount_amount: 0,
 total_amount: 100000
 }
-
+```
 
 The total amount is calculated as quantity × unit price (2 × 50000).
 
 **dim_date**
 
 The date dimension stores detailed time information:
-
+```json
 {
 date_key: 20240115,
 full_date: "2024-01-15",
@@ -174,13 +176,13 @@ quarter: "Q1",
 year: 2024,
 is_weekend: false
 }
-
+```
 
 **dim_product**
 
 The product dimension stores descriptive product details:
 
-
+```json
 {
 product_key: 5,
 product_name: "Laptop",
@@ -188,17 +190,18 @@ category: "Electronics",
 brand: "Dell"
 }
 
-
+```
 **dim_customer**
 
 The customer dimension stores customer-related information:
 
+```json
 {
 customer_key: 12,
 customer_name: "John Doe",
 city: "Mumbai"
 }
-
+```
 
 ---
 
