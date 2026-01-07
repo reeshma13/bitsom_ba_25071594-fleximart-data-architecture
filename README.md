@@ -103,7 +103,7 @@ MongoDB collections can also be created either using scripts or manually in Mong
   mongosh < part2-nosql/mongodb_operations.js
 
 
-------Alternative:
+------Alternative:-------
 
 - Open MongoDB Compass
 
@@ -119,8 +119,10 @@ Additionally, I gained practical experience in dimensional modeling, star schema
 
 ## Challenges Faced
 
-1. Handling foreign key errors in fact tables
-Solution: Ensured that dimension tables were populated first and validated all foreign key references before inserting fact data.
+# Handling foreign key errors in fact tables
+While loading data into the fact_sales table, foreign key constraint errors occurred because some dimension records were not available at the time of insertion. Since fact tables depend on dimension tables, inserting sales data before loading date, product, or customer information caused failures.
+Solution: I ensured that all dimension tables (dim_date, dim_product, and dim_customer) were populated first. I also carefully verified that every foreign key used in the fact table existed in the corresponding dimension tables before inserting the data. This step-by-step loading order helped avoid foreign key violations.
 
-2. Managing different date formats and missing values during ETL
-Solution: Implemented date normalization logic and explicit data imputation with clear documentation and comments.
+# Managing different date formats and missing values during ETL
+The raw data contained dates in multiple formats and some records had missing customer or product information. This caused inconsistencies during data transformation and loading.
+Solution: I implemented date normalization logic to convert all dates into a standard format before processing. For missing values, I applied explicit data imputation rules and documented the reasons for these corrections using comments and logs. This approach ensured consistent data quality and made the ETL process transparent and easy to understand.
