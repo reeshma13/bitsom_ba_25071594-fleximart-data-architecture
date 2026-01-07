@@ -1,0 +1,13 @@
+## Python Dependencies
+
+### External Dependency
+- **mysql-connector-python** – Used to connect Python with the MySQL database.
+
+### Built-in Python Libraries
+The following Python libraries are part of the standard Python distribution 
+and do not require separate installation:
+
+- **csv** – Reading and writing CSV files
+- **re** – Data cleaning using regular expressions
+- **logging** – Logging ETL execution details and errors
+- **datetime** – Date parsing and standardization
