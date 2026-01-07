@@ -90,16 +90,16 @@ The dim_customer table enables analysis of sales across different customer locat
 ## Section 2: Design Decisions
 
 
-*** Why you chose this granularity (transaction line-item level) ***
+***1. Why you chose this granularity (transaction line-item level)***
 
 The granularity of the fact table is defined at the **transaction line-item level**, where each row represents one product sold in an order. This level of detail provides maximum flexibility for analysis, allowing sales to be examined at the product, customer, or time level without losing information. It also supports accurate aggregation of quantities and revenue.
 
 
-*** Why surrogate keys instead of natural keys ***
+***2. Why surrogate keys instead of natural keys***
 
 Surrogate keys are used instead of natural keys to improve performance and maintain consistency. Natural keys from source systems may change, be duplicated, or have business meaning that evolves over time. Surrogate keys are system-generated, stable, and ensure efficient joins between fact and dimension tables.
 
-*** How this design supports drill-down and roll-up operations ***
+***3. How this design supports drill-down and roll-up operations***
 
 This star schema design supports both **drill-down and roll-up operations**. Analysts can roll up data from daily sales to monthly or yearly summaries using the date dimension. They can also drill down from category-level sales to individual products or customers. The separation of facts and dimensions makes analytical queries simpler and faster.
 
@@ -131,7 +131,7 @@ In the source transactional system, the following order is recorded:
 
 This data is originally stored across multiple normalized tables such as customers, orders, and order_items.
 
-```css
+```text
 Order #101  
 Customer: John Doe  
 Product: Laptop  
